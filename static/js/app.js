@@ -39,16 +39,16 @@ function buildCharts(sample) {
       y: sData.sample_values,
       mode: 'markers',
       type: 'scatter',
-      name: 'put name in later',
+      hovertext: sData.otu_labels,
       marker: {
         color: 'red',
         size: sData.sample_values
       }
     };
 
-    var data = [trace1];
+    var bubbleData = [trace1];
 
-    var layout = {
+    var bubbleLayout = {
       title: 'Bubble Chart',
       showlegend: false,
       xaxis: {title: 'OTU IDs'},
@@ -56,13 +56,41 @@ function buildCharts(sample) {
       height: 600
     };
 
-    Plotly.newPlot("bubble", data, layout);
-  });
+    Plotly.newPlot("bubble", bubbleData, bubbleLayout);
+  
   // @TODO: Build a Pie Chart
   // HINT: You will need to use slice() to grab the top 10 sample_values,
   // otu_ids, and labels (10 each).
 
+  //sort descending
+  // var sortD = sData.sortBy((first, second) => second.sample_values - first.sample_values).slice(0, 10);
+  // console.log(sortD)
 
+  var descSortVal = sData.sample_values.sort((first, second) => second - first).slice(0, 10);
+  console.log(descSortVal);
+
+  var descSortLab = sData.otu_ids.slice(0, 10);
+  console.log(descSortLab);
+
+  var descSortHov = sData.otu_labels.slice(0, 10);
+  console.log(descSortHov);
+
+  var trace2 = {
+    values: descSortVal,
+    labels: descSortLab,
+    hovertext: descSortHov,
+    type: 'pie'
+  };
+
+  var pieData = [trace2];
+
+  var pieLayout = {
+    title: 'Pie Chart'
+  }
+
+  Plotly.newPlot('pie', pieData, pieLayout)
+
+  });
 };
 
 function init() {
